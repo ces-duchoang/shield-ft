@@ -2,6 +2,7 @@ const path = require("path");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const CleanWebpackPlugin = require("clean-webpack-plugin");
+const CopyPlugin = require("copy-webpack-plugin");
 
 module.exports = {
   entry: "./app/index.js",
@@ -43,6 +44,17 @@ module.exports = {
         ]
       },
       {
+        test: /\.(png|jpg|gif)$/i,
+        use: [
+          {
+            loader: "url-loader",
+            options: {
+              limit: 8192
+            }
+          }
+        ]
+      },
+      {
         test: /\.(ico)$/,
         use: "file-loader?name=[name].[ext]"
       }
@@ -59,6 +71,13 @@ module.exports = {
       favicon: path.resolve(__dirname, "public", "favicon.ico"),
       template: path.resolve(__dirname, "public", "index.html"),
       filename: path.resolve(__dirname, "build", "index.html")
-    })
+    }),
+    new CopyPlugin([
+      {
+        from: path.resolve(__dirname, "public", "_redirects"),
+        to: path.resolve(__dirname, "build"),
+        toType: "dir"
+      }
+    ])
   ]
 };
