@@ -1,0 +1,28 @@
+@import "../../scss/variables";
+
+.login-form-container {
+  display: flex;
+  justify-content: center;
+  height: 100%;
+  .login-form {
+    width: 400px;
+    background-color: white;
+    padding: 1em;
+    border: solid 1px gray;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    .login-avatar{
+      margin-bottom: 1em;
+      
+    }
+    .login-form-forgot {
+      float: right;
+    }
+    .login-form-button {
+      margin-top: 1em;
+      width: 100%;
+    }
+  }
+}
