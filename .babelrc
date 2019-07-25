@@ -9,7 +9,8 @@
     [
       "import",
       { "libraryName": "antd", "libraryDirectory": "es", "style": "css" }
-    ]
+    ],
+    ["@babel/plugin-proposal-class-properties"]
   ],
   "presets": ["@babel/preset-env", "@babel/preset-react"]
 }
