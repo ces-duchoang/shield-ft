@@ -10,6 +10,11 @@ module.exports = {
     path: path.resolve(__dirname, "build"),
     filename: "index.bundle.js"
   },
+  node: {
+    net: 'empty',
+    tls: 'empty',
+    dns: 'empty'
+  },
   module: {
     rules: [
       {
