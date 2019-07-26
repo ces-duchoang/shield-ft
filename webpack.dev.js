@@ -1,6 +1,7 @@
 const merge = require("webpack-merge");
 const common = require("./webpack.common.js");
-const webpack = require('webpack')
+const webpack = require("webpack");
+require("dotenv").config();
 
 module.exports = env =>
   merge(common, {
@@ -16,7 +17,9 @@ module.exports = env =>
     },
     plugins: [
       new webpack.DefinePlugin({
-        API_BASE_DOMAIN: JSON.stringify(`http://localhost:${env.PORT}`)
+        API_BASE_DOMAIN: JSON.stringify(
+          `http://localhost:${process.env.BK_LOCAL_PORT}`
+        )
       })
     ]
   });
