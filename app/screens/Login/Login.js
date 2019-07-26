@@ -1,21 +1,37 @@
 import React from "react";
 import "./Login.scss";
 import ShieldIcon from "../../images/shieldicon.png";
-import { Layout, Form, Input, Button, Icon, Checkbox, Row, Avatar } from "antd";
+import {
+  Layout,
+  Form,
+  Input,
+  Button,
+  Icon,
+  Checkbox,
+  Row,
+  Avatar,
+  notification
+} from "antd";
 import Particles from "react-particles-js";
 import { validateEmail, validatePassword } from "../../validators/Account";
+import Api from "../../api/Auth";
+import Session from "../../api/Session";
+import { withRouter } from "react-router-dom";
 
-export default class Login extends React.Component {
+class Login extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       email: "",
       password: "",
-      alert: {}
+      remember: true,
+      alert: {},
+      disLoginBtn: false
     };
   }
   componentDidMount() {
     document.title = "Đăng nhập";
+    if (Session.isLogined()) this.props.history.push("/");
   }
   setFormState = (key, value) => {
     this.setState({ [key]: value, alert: {} });
@@ -23,7 +39,26 @@ export default class Login extends React.Component {
   handleSubmit = e => {
     e.preventDefault();
     if (!this.isValidForm()) {
-      //TODO: call api auth
+      this.setState({ disLoginBtn: true });
+      Api.auth(this.state.email, this.state.password, this.state.remember)
+        .then(res => {
+          localStorage.setItem("_uid", res.data.token);
+          localStorage.setItem("info", res.data);
+          notification["success"]({
+            message: 'Success',
+            description: 'Welcome back user'
+          });
+          this.props.history.push("/");
+        })
+        .catch(err => {
+          notification["error"]({
+            message: `Error ${err.response.status}`,
+            description: err.response.data.message
+          });
+        })
+        .finally(() => {
+          this.setState({ disLoginBtn: false });
+        });
     }
   };
   isValidForm = () => {
@@ -89,7 +124,12 @@ export default class Login extends React.Component {
               />
             </Form.Item>
             <Form.Item>
-              <Checkbox defaultChecked={true}>Remember me</Checkbox>
+              <Checkbox
+                defaultChecked={true}
+                onChange={e => this.setFormState("remember", e.target.value)}
+              >
+                Remember me
+              </Checkbox>
               <a className="login-form-forgot" href="">
                 Forgot password
               </a>
@@ -107,3 +147,5 @@ export default class Login extends React.Component {
     );
   }
 }
+
+export default withRouter(Login);

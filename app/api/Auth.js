@@ -1,9 +1,9 @@
-const APICaller = require("./APICaller");
+import APICaller from "./APICaller";
 
 const prefix = "auth";
 
 export default {
-  auth(email, password) {
-    return APICaller(prefix, "POST", { email, password });
+  auth(email, password, remember) {
+    return APICaller(prefix, "POST", { email, password, remember });
   }
 };
