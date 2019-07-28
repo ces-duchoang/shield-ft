@@ -8,7 +8,7 @@ import { Result } from "antd";
 
 class App extends Component {
   render() {
-    isValidSession() && clearSession();
+    isValidSession() || clearSession();
     return (
       <BrowserRouter>
         <Switch>
