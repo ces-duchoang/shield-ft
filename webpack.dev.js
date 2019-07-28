@@ -8,6 +8,7 @@ module.exports = env =>
     mode: "development",
     devtool: "source-map",
     devServer: {
+      host: process.env.LOCAL_DOMAIN,
       contentBase: "./build",
       hot: true,
       open: true,
@@ -18,7 +19,7 @@ module.exports = env =>
     plugins: [
       new webpack.DefinePlugin({
         API_BASE_DOMAIN: JSON.stringify(
-          `http://localhost:${process.env.BK_LOCAL_PORT}`
+          `${process.env.API_BASE_DOMAIN}:${process.env.BK_LOCAL_PORT}`
         )
       })
     ]

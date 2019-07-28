@@ -10,12 +10,13 @@ import {
   Checkbox,
   Row,
   Avatar,
-  notification
+  notification,
+  message
 } from "antd";
 import Particles from "react-particles-js";
 import { validateEmail, validatePassword } from "../../validators/Account";
 import Api from "../../api/Auth";
-import Session from "../../api/Session";
+import { getToken, save } from "../../api/Session";
 import { withRouter } from "react-router-dom";
 
 class Login extends React.Component {
@@ -29,9 +30,9 @@ class Login extends React.Component {
       disLoginBtn: false
     };
   }
-  componentDidMount() {
+  async componentDidMount() {
     document.title = "Đăng nhập";
-    if (Session.isLogined()) this.props.history.push("/");
+    if (getToken()) this.props.history.push("/");
   }
   setFormState = (key, value) => {
     this.setState({ [key]: value, alert: {} });
@@ -42,13 +43,8 @@ class Login extends React.Component {
       this.setState({ disLoginBtn: true });
       Api.auth(this.state.email, this.state.password, this.state.remember)
         .then(res => {
-          localStorage.setItem("_uid", res.data.token);
-          localStorage.setItem("info", res.data);
-          notification["success"]({
-            message: 'Success',
-            description: 'Welcome back user'
-          });
-          this.props.history.push("/");
+          save(res.data);
+          message.success("Welcome back user");
         })
         .catch(err => {
           notification["error"]({
@@ -57,7 +53,9 @@ class Login extends React.Component {
           });
         })
         .finally(() => {
-          this.setState({ disLoginBtn: false });
+          getToken()
+            ? this.props.history.push("/")
+            : this.setState({ disLoginBtn: false });
         });
     }
   };
