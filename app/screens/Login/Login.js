@@ -32,7 +32,7 @@ class Login extends React.Component {
   }
   async componentDidMount() {
     document.title = "Đăng nhập";
-    if (getToken()) this.props.history.push("/");
+    if (getToken()) this.props.history.push("/dashboard");
   }
   setFormState = (key, value) => {
     this.setState({ [key]: value, alert: {} });
@@ -54,7 +54,7 @@ class Login extends React.Component {
         })
         .finally(() => {
           getToken()
-            ? this.props.history.push("/")
+            ? this.props.history.push("/dashboard")
             : this.setState({ disLoginBtn: false });
         });
     }

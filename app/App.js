@@ -5,6 +5,7 @@ import Home from "./screens/Home";
 import Login from "./screens/Login";
 import { isValidSession, clearSession } from "./api/Session";
 import { Result } from "antd";
+import DashBoard from "./screens/Dashboard";
 
 class App extends Component {
   render() {
@@ -12,8 +13,9 @@ class App extends Component {
     return (
       <BrowserRouter>
         <Switch>
-          <Route path="/login" exact component={Login} />
           <Route path="/" exact component={Home} />
+          <Route path="/login" exact component={Login} />
+          <Route path="/dashboard" exact component={DashBoard} />
           <Route component={NotFound} />
         </Switch>
       </BrowserRouter>
@@ -26,6 +28,7 @@ const NotFound = () => (
     status="404"
     title="404"
     subTitle="Sorry, the page you visited does not exist."
+    className="result-center"
   />
 );
 
