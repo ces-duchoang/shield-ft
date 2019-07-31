@@ -5,15 +5,31 @@ import Home from "./screens/Home";
 import Login from "./screens/Login";
 import { isValidSession, clearSession } from "./api/Session";
 import { Result } from "antd";
+import DashBoard from "./screens/Dashboard";
+import PrivateRoute from "./components/PrivateRoute";
+import Initializing from "./components/Initializing";
 
 class App extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      isInitializing: true
+    };
+  }
+  async componentWillMount() {
+    (await isValidSession()) || clearSession();
+    this.setState({ isInitializing: false });
+  }
+
   render() {
-    isValidSession() || clearSession();
-    return (
+    return this.isInitializing ? (
+      <Initializing />
+    ) : (
       <BrowserRouter>
         <Switch>
-          <Route path="/login" exact component={Login} />
           <Route path="/" exact component={Home} />
+          <Route path="/login" exact component={Login} />
+          <PrivateRoute path="/dashboard" component={DashBoard} />
           <Route component={NotFound} />
         </Switch>
       </BrowserRouter>
@@ -26,6 +42,7 @@ const NotFound = () => (
     status="404"
     title="404"
     subTitle="Sorry, the page you visited does not exist."
+    className="result-center"
   />
 );
 
