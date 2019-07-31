@@ -1,25 +1,35 @@
 import "./Dashboard.scss";
-import React, { useState } from "react";
+import React, { useEffect } from "react";
 import SideBar from "../../components/sidebar";
-import { Layout, Breadcrumb, Result, Row, Icon } from "antd";
+import { Layout, Result, Row, Icon } from "antd";
 import { Switch, Route } from "react-router-dom";
 import PrivateRoute from "../../components/PrivateRoute";
-import Category from "./Category";
+import { menuSet } from "./routes";
 
-const { Sider, Footer, Header, Content } = Layout;
+const { Content } = Layout;
 
 export default () => {
-  document.title = "Dashboard - Shield Manga";
+  useEffect(() => {
+    document.title = "Dashboard - Shield Manga";
+  });
+  const Routes = menuSet.map(set => (
+    <PrivateRoute
+      key={set.endpoint}
+      path={set.endpoint}
+      component={set.component}
+      {...set}
+    />
+  ));
   return (
     <Layout style={{ height: "100%" }}>
       <Row type="flex" justify="start" style={{ height: "100%" }}>
-        <SideBar />
-        <Layout.Content>
+        <SideBar menuSet={menuSet} />
+        <Content className="dashboard-container">
           <Switch>
-            <PrivateRoute path="/category" exact component={Category} />
+            {Routes}
             <Route component={Welcome} />
           </Switch>
-        </Layout.Content>
+        </Content>
       </Row>
     </Layout>
   );
