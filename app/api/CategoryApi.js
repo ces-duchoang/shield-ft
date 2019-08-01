@@ -13,7 +13,7 @@ export default {
     return APICaller(prefix, "POST", data);
   },
   update(data) {
-    return APICaller(`${prefix}/${id}`, "PUT", data);
+    return APICaller(`${prefix}/${data._id}`, "PUT", data);
   },
   delete(id) {
     return APICaller(`${prefix}/${id}`, "DELETE");
