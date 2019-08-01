@@ -4,23 +4,18 @@ import {
   Button,
   Icon,
   PageHeader,
-  Modal,
-  Input,
-  Form,
-  Row,
-  Col,
-  notification
+  notification,
+  message,
+  Popconfirm
 } from "antd";
 import ButtonGroup from "antd/lib/button/button-group";
-import {
-  validateName,
-  validateDescription
-} from "../../../validators/Category";
-import { isEmpty, isNull } from "lodash";
 import CategoryAPI from "../../../api/CategoryApi";
-import TextArea from "antd/lib/input/TextArea";
+import TypeForm from "../../../components/TypeForm";
+import { isEmpty } from "lodash";
+import ErrNoti from "../../../utils/ErrorNotification";
+import moment from "moment";
 
-const columns = [
+const getColumns = actions => [
   {
     title: "#",
     key: "#",
@@ -29,30 +24,24 @@ const columns = [
     width: 40
   },
   {
-    title: "ID",
-    key: "ID",
-    dataIndex: "_id",
-    render: text => <a href="javascript:;">{text}</a>,
-    align: "center",
-    width: 140
-  },
-  {
     title: "Name",
     key: "name",
     dataIndex: "name",
+    width: 140,
     render: text => <a href="javascript:;">{text}</a>
   },
   {
-    title: "Create at",
-    key: "create",
-    dataIndex: "createdAt",
+    title: "Description",
+    key: "description",
+    dataIndex: "description",
     render: text => <>{text}</>
   },
   {
     title: "Update at",
     key: "update",
     dataIndex: "updated_at",
-    render: text => <>{text}</>
+    width: 150,
+    render: text => <>{moment(text, moment.ISO_8601).fromNow()}</>
   },
   {
     title: "Action",
@@ -60,8 +49,15 @@ const columns = [
     key: "action",
     render: (cell, row) => (
       <ButtonGroup>
-        <Button type="primary" icon="edit" />
-        <Button type="danger" icon="delete" />
+        <Button onClick={e => actions.edit(row)} type="primary" icon="edit" />
+        <Popconfirm
+          title="Are you sure delete this?"
+          onConfirm={() => actions.delete(row)}
+          okText="Yes"
+          cancelText="No"
+        >
+          <Button type="danger" icon="delete" />
+        </Popconfirm>
       </ButtonGroup>
     ),
     width: 100,
@@ -69,24 +65,11 @@ const columns = [
   }
 ];
 
-const initState = { name: "", description: "" };
-
 export default props => {
   const [visible, setVisible] = useState(false);
-  const [formData, setFormData] = useState(initState);
-  const [alert, setAlert] = useState({});
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(false);
-
-  const clearState = () => {
-    setFormData(initState);
-    setVisible(false);
-  };
-
-  const setFormState = (key, value) => {
-    setAlert({});
-    setFormData({ ...formData, [key]: value });
-  };
+  const [formData, setFormData] = useState({});
 
   useEffect(() => {
     document.title = "Manage category - Dashboard - Shield Manga";
@@ -107,28 +90,52 @@ export default props => {
       .finally(() => setLoading(false));
   }, []);
 
-  const isValidForm = () => {
-    const name = validateName(formData.name);
-    const description = validateDescription(formData.description);
-    setAlert({ name, description });
-    return isEmpty(alert);
+  const close = () => {
+    setVisible(false);
+    setFormData({});
   };
 
-  const submit = () => {
-    if (isValidForm()) {
-      setVisible(false);
-      CategoryAPI.create({ ...formData })
-        .then(res => {
-          setData([...data, { ...res.data, key: data.length + 1 }]);
-        })
-        .catch(err =>
-          notification.error({
-            message: "Error " + err.response.status,
-            description: err.response.data.message
+  const receiveData = resData => {
+    if (isEmpty(formData)) createCategory(resData);
+    else updateCategory(resData);
+  };
+
+  const createCategory = formData => {
+    CategoryAPI.create({ ...formData })
+      .then(res => {
+        setData([...data, { ...res.data, key: data.length + 1 }]);
+        message.success(`Created ${formData.name}`);
+      })
+      .catch(err => ErrNoti(err));
+  };
+
+  const editCategory = category => {
+    setFormData(category);
+    setVisible(true);
+  };
+
+  const updateCategory = ({ ...formData }) => {
+    setFormData({});
+    CategoryAPI.update(formData)
+      .then(res => {
+        message.success(`Updated ${formData.name}`);
+        setData(
+          data.map(value => {
+            if (value._id === formData._id) return formData;
+            return value;
           })
-        )
-        .finally(() => clearState());
-    }
+        );
+      })
+      .catch(err => ErrNoti(err));
+  };
+
+  const deleteCategory = category => {
+    CategoryAPI.delete(category._id)
+      .then(res => {
+        message.success(`Deleted ${category.name}`);
+        setData(data.filter(c => c._id !== category._id));
+      })
+      .catch(err => ErrNoti(err));
   };
 
   return (
@@ -139,7 +146,7 @@ export default props => {
         subTitle={props.description}
       />
       <Table
-        columns={columns}
+        columns={getColumns({ edit: editCategory, delete: deleteCategory })}
         dataSource={data}
         bordered
         rowKey="uid"
@@ -151,29 +158,12 @@ export default props => {
           </Button>
         )}
       />
-      <Modal
-        title="Basic Modal"
+      <TypeForm
         visible={visible}
-        onOk={() => submit()}
-        onCancel={() => clearState()}
-        centered
-      >
-        <Form.Item label="Name" required {...alert.name}>
-          <Input
-            placeholder="Name"
-            value={formData.name}
-            onChange={e => setFormState("name", e.target.value)}
-          />
-        </Form.Item>
-        <Form.Item label="Description" required {...alert.description}>
-          <TextArea
-            placeholder="Description"
-            autosize={{ minRows: 5, maxRows: 6 }}
-            value={formData.description}
-            onChange={e => setFormState("description", e.target.value)}
-          />
-        </Form.Item>
-      </Modal>
+        close={close}
+        callback={receiveData}
+        formData={formData}
+      />
     </>
   );
 };
