@@ -42,8 +42,8 @@ export default props => {
     <Modal
       title={isEmpty(props.formData) ? "Create" : "Edit"}
       visible={props.visible}
-      onOk={() => submit()}
-      onCancel={() => clearState()}
+      onOk={submit}
+      onCancel={clearState}
       centered
     >
       <Form.Item label="Name" required {...alert.name}>

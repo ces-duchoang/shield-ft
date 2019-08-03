@@ -1,13 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {
-  Table,
-  Button,
-  Icon,
-  PageHeader,
-  notification,
-  message,
-  Popconfirm
-} from "antd";
+import { Table, Button, Icon, PageHeader, message, Popconfirm } from "antd";
 import ButtonGroup from "antd/lib/button/button-group";
 import CategoryAPI from "../../../api/CategoryApi";
 import TypeForm from "../../../components/TypeForm";
@@ -81,13 +73,11 @@ export default props => {
       .then(res => {
         setData(res.data.map((v, i) => ({ ...v, key: i + 1 })));
       })
-      .catch(err => {
-        notification.error({
-          message: "Error " + err.response.status,
-          description: err.response.data.message
-        });
-      })
-      .finally(() => setLoading(false));
+      .catch(ErrNoti)
+      .finally(() => {
+        setLoading(false);
+        if (document.location.href.includes("#add")) setVisible(true);
+      });
   }, []);
 
   const close = () => {
@@ -101,12 +91,14 @@ export default props => {
   };
 
   const createCategory = formData => {
+    const load = message.loading(`Created ${formData.name}`, 0);
     CategoryAPI.create({ ...formData })
       .then(res => {
         setData([...data, { ...res.data, key: data.length + 1 }]);
+        load();
         message.success(`Created ${formData.name}`);
       })
-      .catch(err => ErrNoti(err));
+      .catch(ErrNoti);
   };
 
   const editCategory = category => {
@@ -115,27 +107,31 @@ export default props => {
   };
 
   const updateCategory = ({ ...formData }) => {
+    const load = message.loading(`Updating ${formData.name}`, 0);
     setFormData({});
     CategoryAPI.update(formData)
       .then(res => {
-        message.success(`Updated ${formData.name}`);
+        load();
         setData(
           data.map(value => {
             if (value._id === formData._id) return formData;
             return value;
           })
         );
+        message.success(`Updated ${formData.name}`);
       })
-      .catch(err => ErrNoti(err));
+      .catch(ErrNoti);
   };
 
   const deleteCategory = category => {
+    const load = message.loading(`Deleting ${category.name}`, 0);
     CategoryAPI.delete(category._id)
       .then(res => {
-        message.success(`Deleted ${category.name}`);
+        load();
         setData(data.filter(c => c._id !== category._id));
+        message.success(`Deleted ${category.name}`);
       })
-      .catch(err => ErrNoti(err));
+      .catch(ErrNoti);
   };
 
   return (
@@ -152,7 +148,12 @@ export default props => {
         rowKey="uid"
         loading={loading}
         title={() => (
-          <Button type="dashed" block onClick={() => setVisible(true)}>
+          <Button
+            type="dashed"
+            block
+            disabled={loading}
+            onClick={() => setVisible(true)}
+          >
             <Icon type="plus" />
             Create
           </Button>
