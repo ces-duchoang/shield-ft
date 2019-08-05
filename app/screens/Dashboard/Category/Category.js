@@ -76,9 +76,12 @@ export default props => {
       .catch(ErrNoti)
       .finally(() => {
         setLoading(false);
-        if (document.location.href.includes("#add")) setVisible(true);
       });
   }, []);
+
+  useEffect(()=>{
+    if (document.location.href.includes("#add")) setVisible(true);
+  }, [document.location.href])
 
   const close = () => {
     setVisible(false);
@@ -91,7 +94,7 @@ export default props => {
   };
 
   const createCategory = formData => {
-    const load = message.loading(`Created ${formData.name}`, 0);
+    const load = message.loading(`Creating ${formData.name}`, 0);
     CategoryAPI.create({ ...formData })
       .then(res => {
         setData([...data, { ...res.data, key: data.length + 1 }]);
