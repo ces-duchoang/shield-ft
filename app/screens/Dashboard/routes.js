@@ -1,4 +1,5 @@
 import Category from "./Category";
+import Author from './Author'
 
 export const menuSet = [
   {
@@ -43,6 +44,8 @@ export const menuSet = [
     endpoint: "/dashboard/author",
     icon: "solution",
     name: "Author",
+    component: Author,
+    description: "Manage all authors",
     subs: [
       { endpoint: "/dashboard/author#add", icon: "plus", name: "Add" },
       { endpoint: "/dashboard/author", icon: "ordered-list", name: "List" }
