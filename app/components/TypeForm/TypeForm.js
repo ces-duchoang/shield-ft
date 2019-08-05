@@ -9,6 +9,7 @@ const initState = { name: "", description: "" };
 export default props => {
   const [formData, setFormData] = useState(initState);
   const [alert, setAlert] = useState({});
+  
   const setFormState = (key, value) => {
     setAlert({});
     setFormData({ ...formData, [key]: value });
@@ -16,14 +17,17 @@ export default props => {
 
   const clearState = () => {
     setFormData(initState);
+    setAlert({});
     props.close();
   };
 
   const isValidForm = () => {
-    const name = validateName(formData.name);
-    const description = validateDescription(formData.description);
-    setAlert({ name, description });
-    return !(name || description);
+    const alert = {
+      name: validateName(formData.name),
+      description: validateDescription(formData.description)
+    };
+    setAlert(alert);
+    return _.values(alert).every(_.isEmpty);
   };
 
   const submit = () => {
@@ -53,7 +57,7 @@ export default props => {
           onChange={e => setFormState("name", e.target.value)}
         />
       </Form.Item>
-      <Form.Item label="Description" required {...alert.description}>
+      <Form.Item label="Description" {...alert.description}>
         <TextArea
           placeholder="Description"
           autosize={{ minRows: 5, maxRows: 6 }}

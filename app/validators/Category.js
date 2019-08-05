@@ -2,6 +2,7 @@ import Joi from "@hapi/joi";
 import { getError } from "./Common";
 
 const NameSchema = Joi.string()
+  .required()
   .min(3)
   .max(32);
 const DescriptionSchema = Joi.string()
