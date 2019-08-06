@@ -1,5 +1,11 @@
-import Category from "./Category";
-import Author from './Author'
+import Author from "./Author";
+import TypeScreen from "./Type";
+import FrequencyApi from "../../api/FrequencyApi";
+import MagazineApi from "../../api/MagazineApi";
+import PublisherApi from "../../api/PublisherApi";
+import BookTypeApi from "../../api/BookTypeApi";
+import CategoryApi from "../../api/CategoryApi";
+import StatusApi from "../../api/StatusApi";
 
 export const menuSet = [
   {
@@ -33,8 +39,9 @@ export const menuSet = [
     endpoint: "/dashboard/category",
     icon: "tags",
     name: "Category",
-    component: Category,
+    component: TypeScreen,
     description: "Manage all categories",
+    api: CategoryApi,
     subs: [
       { endpoint: "/dashboard/category#add", icon: "plus", name: "Add" },
       { endpoint: "/dashboard/category", icon: "ordered-list", name: "List" }
@@ -55,6 +62,9 @@ export const menuSet = [
     endpoint: "/dashboard/booktype",
     icon: "file-exclamation",
     name: "Book type",
+    component: TypeScreen,
+    description: "Manage book type",
+    api: BookTypeApi,
     subs: [
       { endpoint: "/dashboard/booktype#add", icon: "plus", name: "Add" },
       { endpoint: "/dashboard/booktype", icon: "ordered-list", name: "List" }
@@ -64,15 +74,33 @@ export const menuSet = [
     endpoint: "/dashboard/frequency",
     icon: "interaction",
     name: "Frequency",
+    component: TypeScreen,
+    description: "Manage frequency",
+    api: FrequencyApi,
     subs: [
       { endpoint: "/dashboard/frequency#add", icon: "plus", name: "Add" },
       { endpoint: "/dashboard/frequency", icon: "ordered-list", name: "List" }
     ]
   },
   {
+    endpoint: "/dashboard/magazine",
+    icon: "reconciliation",
+    name: "Magazine",
+    component: TypeScreen,
+    description: "Manage magazine",
+    api: MagazineApi,
+    subs: [
+      { endpoint: "/dashboard/magazine#add", icon: "plus", name: "Add" },
+      { endpoint: "/dashboard/magazine", icon: "ordered-list", name: "List" }
+    ]
+  },
+  {
     endpoint: "/dashboard/publisher",
     icon: "bank",
     name: "Publisher",
+    component: TypeScreen,
+    description: "Manage publisher",
+    api: PublisherApi,
     subs: [
       { endpoint: "/dashboard/publisher#add", icon: "plus", name: "Add" },
       { endpoint: "/dashboard/publisher", icon: "ordered-list", name: "List" }
@@ -82,6 +110,9 @@ export const menuSet = [
     endpoint: "/dashboard/status",
     icon: "alert",
     name: "Status",
+    component: TypeScreen,
+    description: "Manage book status",
+    api: StatusApi,
     subs: [
       { endpoint: "/dashboard/status#add", icon: "plus", name: "Add" },
       { endpoint: "/dashboard/status", icon: "ordered-list", name: "List" }
