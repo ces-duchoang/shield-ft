@@ -3,6 +3,7 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const CleanWebpackPlugin = require("clean-webpack-plugin");
 const CopyPlugin = require("copy-webpack-plugin");
+const darkTheme = require("@ant-design/dark-theme");
 
 module.exports = {
   entry: "./app/index.js",
@@ -11,9 +12,9 @@ module.exports = {
     filename: "index.bundle.js"
   },
   node: {
-    net: 'empty',
-    tls: 'empty',
-    dns: 'empty'
+    net: "empty",
+    tls: "empty",
+    dns: "empty"
   },
   module: {
     rules: [
@@ -27,6 +28,24 @@ module.exports = {
             plugins: ["@babel/plugin-proposal-object-rest-spread"]
           }
         }
+      },
+      {
+        test: /\.less$/,
+        use: [
+          {
+            loader: "style-loader"
+          },
+          {
+            loader: "css-loader"
+          },
+          {
+            loader: "less-loader",
+            options: {
+              javascriptEnabled: true,
+              modifyVars: darkTheme
+            }
+          }
+        ]
       },
       {
         test: /\.s?css$/,
