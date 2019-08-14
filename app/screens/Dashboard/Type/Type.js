@@ -30,7 +30,7 @@ const getColumns = actions => [
   {
     title: "Update at",
     key: "update",
-    dataIndex: "updated_at",
+    dataIndex: "updatedDate",
     width: 150,
     render: text => <>{moment(text, moment.ISO_8601).fromNow()}</>
   },
@@ -79,9 +79,9 @@ export default props => {
       });
   }, []);
 
-  useEffect(()=>{
+  useEffect(() => {
     if (document.location.href.includes("#add")) setVisible(true);
-  }, [document.location.href])
+  }, [document.location.href]);
 
   const close = () => {
     setVisible(false);
@@ -101,7 +101,8 @@ export default props => {
         load();
         message.success(`Created ${formData.name}`);
       })
-      .catch(ErrNoti);
+      .catch(ErrNoti)
+      .finally(load);
   };
 
   const editType = type => {
@@ -114,27 +115,27 @@ export default props => {
     setFormData({});
     API.update(formData)
       .then(res => {
-        load();
         setData(
-          data.map(value => {
-            if (value._id === formData._id) return formData;
+          data.map((value, i) => {
+            if (value._id === formData._id) return { ...res.data, key: i + 1 };
             return value;
           })
         );
         message.success(`Updated ${formData.name}`);
       })
-      .catch(ErrNoti);
+      .catch(ErrNoti)
+      .finally(load);
   };
 
   const deleteType = type => {
     const load = message.loading(`Deleting ${type.name}`, 0);
     API.delete(type._id)
       .then(res => {
-        load();
         setData(data.filter(c => c._id !== type._id));
         message.success(`Deleted ${type.name}`);
       })
-      .catch(ErrNoti);
+      .catch(ErrNoti)
+      .finally(load);
   };
 
   return (
