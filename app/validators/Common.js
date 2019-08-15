@@ -17,3 +17,12 @@ export const getMapError = error => {
     help: `${startCase(error.details[0].path[0])} is invalid format`
   };
 };
+
+
+export const getSummaryError = (error, field) => {
+  if(!error) return;
+  return {
+    validateStatus: "error",
+    help: `${field} is invalid format`
+  }
+}

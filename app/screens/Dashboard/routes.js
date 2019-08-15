@@ -1,5 +1,6 @@
 import Author from "./Author";
 import TypeScreen from "./Type";
+import Team from "./Team";
 import FrequencyApi from "../../api/FrequencyApi";
 import MagazineApi from "../../api/MagazineApi";
 import PublisherApi from "../../api/PublisherApi";
@@ -30,6 +31,8 @@ export const menuSet = [
     endpoint: "/dashboard/team",
     icon: "team",
     name: "Team",
+    component: Team,
+    description: "Manage team",
     subs: [
       { endpoint: "/dashboard/team#add", icon: "plus", name: "Add" },
       { endpoint: "/dashboard/team", icon: "ordered-list", name: "List" }
