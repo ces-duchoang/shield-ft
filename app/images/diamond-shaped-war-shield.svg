@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!-- Generator: Adobe Illustrator 16.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" id="Capa_1" 
+	xmlns="http://www.w3.org/2000/svg" fill="url(#g1)" stroke="red" stroke-width="5" 
+	xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="360.738px" height="360.737px" viewBox="0 0 360.738 360.737" style="enable-background:new 0 0 360.738 360.737;" xml:space="preserve">
+	<g>
+		<g>
+			<polygon points="180.373,0.003 0,69.688 30.691,119.198 7.993,117.853 103.634,283.873 132.736,283.873 180.373,360.734 
+			229.029,283.873 261.677,283.873 350.488,124.002 329.843,124.641 360.738,75.837 		"/>
+		</g>
+	</g>
+	<defs>
+		<linearGradient id="g1" x1='100%' y1='100%' >
+			<stop offset='0%' stop-color='#051e3e' >
+				<animate id='a1' attributeName="stop-color" values="#051e3e;#251e3e;#451e3e;#651e3e;#851e3e;#651e3e;#451e3e;#251e3e" begin="0; a2.end" dur="0.75s" />
+				<animate id='a2' attributeName="stop-color" values="#051e3e;#251e3e;#451e3e;#651e3e;#851e3e;#651e3e;#451e3e;#251e3e" begin="a1.end" dur="0.75s" />
+			</stop>
+			<stop offset='100%' stop-color='#851e3e' >
+				<animate id='a3' attributeName="stop-color" values="#851e3e;#651e3e;#451e3e;#251e3e;#051e3e" begin="0; a4.end" dur="0.75s" />
+				<animate id='a4' attributeName="stop-color" values="#051e3e;#251e3e;#451e3e;#651e3e;#851e3e" begin="a3.end" dur="0.75s" />
+			</stop>
+		</linearGradient>
+	</defs>
+</svg>
