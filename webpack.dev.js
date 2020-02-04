@@ -12,7 +12,7 @@ module.exports = env =>
       contentBase: "./build",
       hot: true,
       open: true,
-      port: env.PORT,
+      port: env && env.PORT || process.env.PORT,
       watchContentBase: true,
       historyApiFallback: true
     },
