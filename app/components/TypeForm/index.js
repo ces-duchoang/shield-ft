@@ -1,1 +1,1 @@
-export { default } from "./TypeForm";
+export {default} from './TypeForm';

@@ -1,6 +1,6 @@
-const USER_TOKEN = "_uid";
-const USER_INFO = "_info";
-import AuthApi from "./Auth";
+const USER_TOKEN = '_uid';
+const USER_INFO = '_info';
+import AuthApi from './Auth';
 
 export const isValidSession = async () => {
   try {
@@ -18,13 +18,13 @@ export const isValidSession = async () => {
 
 export const getToken = () => localStorage.getItem(USER_TOKEN);
 
-export const save = session => {
+export const save = (session) => {
   localStorage.setItem(USER_TOKEN, session.token);
   localStorage.setItem(USER_INFO, JSON.stringify(session.user));
   return true;
 };
 
-export const updateUserInfo = userInfo =>
+export const updateUserInfo = (userInfo) =>
   localStorage.setItem(USER_INFO, JSON.stringify(userInfo));
 
 export const clearSession = () => localStorage.clear();
