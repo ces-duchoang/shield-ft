@@ -1,5 +1,6 @@
-import "./Team.scss";
-import React, { useState, useEffect } from "react";
+/* eslint-disable react/display-name */
+import './Team.scss';
+import React, {useState, useEffect} from 'react';
 import {
   PageHeader,
   Input,
@@ -8,49 +9,50 @@ import {
   Button,
   Table,
   Popconfirm,
-  message
-} from "antd";
-import TeamForm from "../../../components/TeamForm";
-import TeamApi from "../../../api/TeamApi";
-import moment from "moment";
-import ButtonGroup from "antd/lib/button/button-group";
-import ErrNoti from "../../../utils/ErrorNotification";
+  message,
+} from 'antd';
+import TeamForm from '../../../components/TeamForm';
+import TeamApi from '../../../api/TeamApi';
+import moment from 'moment';
+import ButtonGroup from 'antd/lib/button/button-group';
+import ErrNoti from '../../../utils/ErrorNotification';
+import PropTypes from 'prop-types';
 
-const getColumns = actions => [
+const getColumns = (actions) => [
   {
-    title: "#",
-    key: "#",
-    dataIndex: "key",
-    render: cell => <b key={cell}>{cell}</b>,
-    width: 40
+    title: '#',
+    key: '#',
+    dataIndex: 'key',
+    render: (cell) => <b key={cell}>{cell}</b>,
+    width: 40,
   },
   {
-    title: "Name",
-    key: "name",
-    dataIndex: "name",
+    title: 'Name',
+    key: 'name',
+    dataIndex: 'name',
     width: 140,
-    render: text => <a>{text}</a>
+    render: (text) => <a>{text}</a>,
   },
   {
-    title: "Description",
-    key: "description",
-    dataIndex: "description",
-    render: text => <>{text}</>
+    title: 'Description',
+    key: 'description',
+    dataIndex: 'description',
+    render: (text) => <>{text}</>,
   },
   {
-    title: "Update at",
-    key: "update",
-    dataIndex: "updatedDate",
+    title: 'Update at',
+    key: 'update',
+    dataIndex: 'updatedDate',
     width: 150,
-    render: text => <>{moment(text, moment.ISO_8601).fromNow()}</>
+    render: (text) => <>{moment(text, moment.ISO_8601).fromNow()}</>,
   },
   {
-    title: "Action",
-    dataIndex: "action",
-    key: "action",
+    title: 'Action',
+    dataIndex: 'action',
+    key: 'action',
     render: (cell, row) => (
       <ButtonGroup>
-        <Button onClick={e => actions.edit(row)} type="primary" icon="edit" />
+        <Button onClick={(e) => actions.edit(row)} type="primary" icon="edit" />
         <Popconfirm
           title="Are you sure delete this?"
           onConfirm={() => actions.delete(row)}
@@ -62,11 +64,11 @@ const getColumns = actions => [
       </ButtonGroup>
     ),
     width: 100,
-    align: "center"
-  }
+    align: 'center',
+  },
 ];
 
-export default props => {
+const Team = (props) => {
   const [formData, setFormData] = useState({});
   const [visible, setVisible] = useState(false);
   const [data, setData] = useState([]);
@@ -74,11 +76,11 @@ export default props => {
 
   useEffect(() => {
     TeamApi.list()
-      .then(res => {
-        setData(res.data.map((team, i) => ({ ...team, key: i + 1 })));
-      })
-      .catch(ErrNoti)
-      .finally(() => setLoading(false));
+        .then((res) => {
+          setData(res.data.map((team, i) => ({...team, key: i + 1})));
+        })
+        .catch(ErrNoti)
+        .finally(() => setLoading(false));
   }, []);
 
   const close = () => {
@@ -86,53 +88,55 @@ export default props => {
     setFormData({});
   };
 
-  const receiveData = resData => {
+  const receiveData = (resData) => {
     if (_.isEmpty(formData)) createTeam(resData);
     else updateTeam(resData);
   };
 
-  const createTeam = team => {
+  const createTeam = (team) => {
     const load = message.loading(`Creating ${formData.name}`, 0);
     TeamApi.create(team)
-      .then(res => {
-        setData([...data, { ...res.data, key: data.length + 1 }]);
-        message.success(`Created ${formData.name}`);
-      })
-      .catch(ErrNoti)
-      .finally(load);
+        .then((res) => {
+          setData([...data, {...res.data, key: data.length + 1}]);
+          message.success(`Created ${formData.name}`);
+        })
+        .catch(ErrNoti)
+        .finally(load);
   };
 
-  const editTeam = team => {
+  const editTeam = (team) => {
     setFormData(team);
     setVisible(true);
   };
 
-  const updateTeam = ({ ...formData }) => {
+  const updateTeam = ({...formData}) => {
     const load = message.loading(`Updating ${formData.name}`, 0);
     setFormData({});
     TeamApi.update(formData)
-      .then(res => {
-        setData(
-          data.map((value, i) => {
-            if (value._id === formData._id) return { ...res.data, key: i + 1 };
-            return value;
-          })
-        );
-        message.success(`Updated ${formData.name}`);
-      })
-      .catch(ErrNoti)
-      .finally(load);
+        .then((res) => {
+          setData(
+              data.map((value, i) => {
+                if (value._id === formData._id) {
+                  return {...res.data, key: i + 1};
+                }
+                return value;
+              }),
+          );
+          message.success(`Updated ${formData.name}`);
+        })
+        .catch(ErrNoti)
+        .finally(load);
   };
 
-  const deleteTeam = team => {
+  const deleteTeam = (team) => {
     const load = message.loading(`Deleting ${team.name}`, 0);
     TeamApi.delete(team._id)
-      .then(res => {
-        setData(data.filter(c => c._id !== team._id));
-        message.success(`Deleted ${team.name}`);
-      })
-      .catch(ErrNoti)
-      .finally(load);
+        .then((res) => {
+          setData(data.filter((c) => c._id !== team._id));
+          message.success(`Deleted ${team.name}`);
+        })
+        .catch(ErrNoti)
+        .finally(load);
   };
 
   return (
@@ -159,12 +163,12 @@ export default props => {
           className="search-dashboard"
           placeholder="Search"
           disabled={loading}
-          onSearch={value => console.log(formData)}
-          style={{ width: 200 }}
+          onSearch={(value) => console.log(formData)}
+          style={{width: 200}}
         />
       </Row>
       <Table
-        columns={getColumns({ edit: editTeam, delete: deleteTeam })}
+        columns={getColumns({edit: editTeam, delete: deleteTeam})}
         dataSource={data}
         bordered
         rowKey="uid"
@@ -179,3 +183,11 @@ export default props => {
     </>
   );
 };
+
+Team.propTypes = {
+  name: PropTypes.string.isRequired,
+  description: PropTypes.string.isRequired,
+  history: PropTypes.object.isRequired,
+};
+
+export default Team;

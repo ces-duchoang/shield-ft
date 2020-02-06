@@ -1,13 +1,12 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import "./Home.scss";
-import { Layout, Menu } from "antd";
-const { Header } = Layout;
+import React from 'react';
+import {Link} from 'react-router-dom';
+import './Home.scss';
+import {Layout, Menu} from 'antd';
+const {Header} = Layout;
 
 export default class Home extends React.Component {
-  
   componentDidMount() {
-    document.title = "Trang chủ";
+    document.title = 'Trang chủ';
   }
 
   render() {
@@ -17,8 +16,8 @@ export default class Home extends React.Component {
           <Menu
             theme="dark"
             mode="horizontal"
-            defaultSelectedKeys={["2"]}
-            style={{ lineHeight: "64px" }}
+            defaultSelectedKeys={['2']}
+            style={{lineHeight: '64px'}}
           >
             <Menu.Item key="1">
               <Link to="/login">Đăng nhập</Link>

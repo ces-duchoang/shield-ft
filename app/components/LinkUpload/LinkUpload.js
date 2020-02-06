@@ -1,8 +1,8 @@
-import "./LinkUpload.scss";
-import React from "react";
-import { Input, Upload, Button, Icon } from "antd";
+import './LinkUpload.scss';
+import React from 'react';
+import {Input, Upload, Button, Icon} from 'antd';
 
-export default props => {
+const LinkUpload = (props) => {
   return (
     <>
       <Input placeholder="Logo" />
@@ -19,3 +19,5 @@ export default props => {
     </>
   );
 };
+
+export default LinkUpload;

@@ -1,1 +1,1 @@
-export { default } from "./AuthorForm";
+export {default} from './AuthorForm';

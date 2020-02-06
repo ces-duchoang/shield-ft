@@ -1,1 +1,1 @@
-export { default } from "./LinkUpload";
+export {default} from './LinkUpload';

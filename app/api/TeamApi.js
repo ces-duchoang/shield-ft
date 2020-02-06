@@ -1,21 +1,21 @@
-import APICaller from "./APICaller";
+import caller from './APICaller';
 
-const prefix = "teams";
+const prefix = 'teams';
 
 export default {
   list() {
-    return APICaller(prefix);
+    return caller(prefix);
   },
   get(id) {
-    return APICaller(`${prefix}/${id}`);
+    return caller(`${prefix}/${id}`);
   },
   create(team) {
-    return APICaller(prefix, "POST", team);
+    return caller(prefix, 'POST', team);
   },
   update(team) {
-    return APICaller(`${prefix}/${team._id}`, "PUT", team);
+    return caller(`${prefix}/${team._id}`, 'PUT', team);
   },
   delete(id) {
-    return APICaller(`${prefix}/${id}`, "DELETE");
-  }
+    return caller(`${prefix}/${id}`, 'DELETE');
+  },
 };

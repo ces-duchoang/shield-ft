@@ -1,21 +1,21 @@
-import APICaller from "./APICaller";
+import caller from './APICaller';
 
-const prefix = "frequencies";
+const prefix = 'frequencies';
 
 export default {
   list() {
-    return APICaller(prefix, "GET");
+    return caller(prefix, 'GET');
   },
   get(id) {
-    return APICaller(`${prefix}/${id}`, "GET");
+    return caller(`${prefix}/${id}`, 'GET');
   },
   create(data) {
-    return APICaller(prefix, "POST", data);
+    return caller(prefix, 'POST', data);
   },
   update(data) {
-    return APICaller(`${prefix}/${data._id}`, "PUT", data);
+    return caller(`${prefix}/${data._id}`, 'PUT', data);
   },
   delete(id) {
-    return APICaller(`${prefix}/${id}`, "DELETE");
-  }
+    return caller(`${prefix}/${id}`, 'DELETE');
+  },
 };

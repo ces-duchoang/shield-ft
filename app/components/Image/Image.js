@@ -1,11 +1,12 @@
-import "./Image.scss";
-import React, { useState } from "react";
-import { Spin } from "antd";
-import ShieldSvg from "../../images/diamond-shaped-war-shield.svg";
+import './Image.scss';
+import React, {useState} from 'react';
+import {Spin} from 'antd';
+import ShieldSvg from '../../images/diamond-shaped-war-shield.svg';
+import PropTypes from 'prop-types';
 
 const antIcon = <img className="shield-loading" src={ShieldSvg} />;
 
-export default props => {
+const Image = (props) => {
   const [loading, setLoading] = useState(true);
   const [isFailed, setFailed] = useState(false);
   const loadFailed = () => {
@@ -25,6 +26,14 @@ export default props => {
         onError={loadFailed}
       />
       {loading && <Spin className="loading-cpn" indicator={antIcon} />}
+      {isFailed && <div>Reload</div>}
     </div>
   );
 };
+
+Image.propTypes = {
+  src: PropTypes.string,
+  className: PropTypes.string,
+};
+
+export default Image;

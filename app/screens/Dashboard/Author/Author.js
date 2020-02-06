@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+/* eslint-disable react/display-name */
+import React, {useState, useEffect} from 'react';
 import {
   Table,
   Button,
@@ -7,75 +8,76 @@ import {
   message,
   Popconfirm,
   Tag,
-  Tooltip
-} from "antd";
-import ButtonGroup from "antd/lib/button/button-group";
-import AuthorApi from "../../../api/AuthorApi";
-import AuthorForm from "../../../components/AuthorForm";
-import { isEmpty } from "lodash";
-import ErrNoti from "../../../utils/ErrorNotification";
-import "./Author.scss";
+  Tooltip,
+} from 'antd';
+import ButtonGroup from 'antd/lib/button/button-group';
+import AuthorApi from '../../../api/AuthorApi';
+import AuthorForm from '../../../components/AuthorForm';
+import {isEmpty} from 'lodash';
+import ErrNoti from '../../../utils/ErrorNotification';
+import './Author.scss';
+import PropTypes from 'prop-types';
 
-const getColumns = actions => [
+const getColumns = (actions) => [
   {
-    title: "#",
-    key: "#",
-    dataIndex: "key",
-    render: cell => <b key={cell}>{cell}</b>,
-    width: 40
-  },
-  {
-    title: "Name",
-    key: "name",
-    dataIndex: "name",
-    width: 140,
-    render: text => <a>{text}</a>
-  },
-  {
-    title: "Description",
-    key: "description",
-    dataIndex: "description",
-    render: text => <>{text}</>
-  },
-  {
-    title: "Social",
-    key: "socials",
-    dataIndex: "socials",
-    align: "center",
+    title: '#',
+    key: '#',
+    dataIndex: 'key',
+    render: (cell) => <b key={cell}>{cell}</b>,
     width: 40,
-    render: socials => (
+  },
+  {
+    title: 'Name',
+    key: 'name',
+    dataIndex: 'name',
+    width: 140,
+    render: (text) => <a>{text}</a>,
+  },
+  {
+    title: 'Description',
+    key: 'description',
+    dataIndex: 'description',
+    render: (text) => <>{text}</>,
+  },
+  {
+    title: 'Social',
+    key: 'socials',
+    dataIndex: 'socials',
+    align: 'center',
+    width: 40,
+    render: (socials) => (
       <div className="social-cell">
         {socials &&
           Object.entries(socials).map((link, i) => (
             <Tooltip key={link[1] + i} title={link[1]}>
-              <a href={link[1]} target="_blank">
+              <a href={link[1]} target="_blank" rel="noopener noreferrer">
                 <Icon type={link[0]} />
               </a>
             </Tooltip>
           ))}
       </div>
-    )
+    ),
   },
   {
-    title: "Gender",
-    key: "gender",
-    dataIndex: "gender",
+    title: 'Gender',
+    key: 'gender',
+    dataIndex: 'gender',
     width: 40,
-    align: "center",
-    render: gender =>
+    align: 'center',
+    render: (gender) =>
       gender === 1 ? (
         <Tag color="blue">Male</Tag>
       ) : (
         <Tag color="magenta">Female</Tag>
-      )
+      ),
   },
   {
-    title: "Action",
-    dataIndex: "action",
-    key: "action",
+    title: 'Action',
+    dataIndex: 'action',
+    key: 'action',
     render: (cell, row) => (
       <ButtonGroup>
-        <Button onClick={e => actions.edit(row)} type="primary" icon="edit" />
+        <Button onClick={(e) => actions.edit(row)} type="primary" icon="edit" />
         <Popconfirm
           title="Are you sure delete this?"
           onConfirm={() => actions.delete(row)}
@@ -87,11 +89,11 @@ const getColumns = actions => [
       </ButtonGroup>
     ),
     width: 100,
-    align: "center"
-  }
+    align: 'center',
+  },
 ];
 
-export default props => {
+const Author = (props) => {
   const [visible, setVisible] = useState(false);
   const [data, setData] = useState(null);
   const [total, setTotal] = useState(1);
@@ -99,7 +101,7 @@ export default props => {
   const [formData, setFormData] = useState({});
 
   useEffect(() => {
-    document.title = "Manage author - Dashboard - Shield Manga";
+    document.title = 'Manage author - Dashboard - Shield Manga';
   });
 
   useEffect(() => {
@@ -107,20 +109,21 @@ export default props => {
   }, []);
 
   useEffect(() => {
-    if (document.location.href.includes("#add")) setVisible(true);
+    if (document.location.href.includes('#add')) setVisible(true);
   }, [document.location.href]);
 
-  const fetchPage = page => {
+  const fetchPage = (page) => {
     setLoading(true);
     AuthorApi.list(page)
-      .then(res => {
-        setData(
-          res.data.data.map((v, i) => ({ ...v, key: (page - 1) * 20 + i + 1 }))
-        );
-        setTotal(res.data.pages * 20);
-      })
-      .catch(ErrNoti)
-      .finally(() => setLoading(false));
+        .then((res) => {
+          const key = (page - 1) * 20 + i + 1;
+          setData(
+              res.data.data.map((v, i) => ({...v, key})),
+          );
+          setTotal(res.data.pages * 20);
+        })
+        .catch(ErrNoti)
+        .finally(() => setLoading(false));
   };
 
   const close = () => {
@@ -128,48 +131,48 @@ export default props => {
     setFormData({});
   };
 
-  const receiveData = resData => {
+  const receiveData = (resData) => {
     if (isEmpty(formData)) createAuthor(resData);
     else updateAuthor(resData);
   };
 
-  const createAuthor = formData => {
+  const createAuthor = (formData) => {
     const load = message.loading(`Creating ${formData.name}`, 0);
     AuthorApi.create(formData)
-      .then(res => {
-        setData([...data, { ...res.data, key: data.length + 1 }]);
-        message.success(`Created ${formData.name}`);
-      })
-      .catch(ErrNoti)
-      .finally(load);
+        .then((res) => {
+          setData([...data, {...res.data, key: data.length + 1}]);
+          message.success(`Created ${formData.name}`);
+        })
+        .catch(ErrNoti)
+        .finally(load);
   };
 
-  const deleteAuthor = author => {
+  const deleteAuthor = (author) => {
     const load = message.loading(`Deleting ${author.name}`, 0);
     AuthorApi.delete(author._id)
-      .then(res => {
-        setData(data.filter(a => a._id !== author._id));
-        message.success(`Deleted ${author.name}`);
-      })
-      .catch(ErrNoti)
-      .finally(load);
+        .then((res) => {
+          setData(data.filter((a) => a._id !== author._id));
+          message.success(`Deleted ${author.name}`);
+        })
+        .catch(ErrNoti)
+        .finally(load);
   };
 
-  const editAuthor = author => {
+  const editAuthor = (author) => {
     setFormData(author);
     setVisible(true);
   };
 
-  const updateAuthor = author => {
+  const updateAuthor = (author) => {
     const load = message.loading(`Updating ${author.name}`, 0);
     setFormData({});
     AuthorApi.update(author)
-      .then(res => {
-        setData(data.map(a => (a._id === author._id ? author : a)));
-        message.success(`Updated ${author.name}`);
-      })
-      .catch(ErrNoti)
-      .finally(load);
+        .then((res) => {
+          setData(data.map((a) => (a._id === author._id ? author : a)));
+          message.success(`Updated ${author.name}`);
+        })
+        .catch(ErrNoti)
+        .finally(load);
   };
 
   return (
@@ -180,7 +183,7 @@ export default props => {
         subTitle={props.description}
       />
       <Table
-        columns={getColumns({ edit: editAuthor, delete: deleteAuthor })}
+        columns={getColumns({edit: editAuthor, delete: deleteAuthor})}
         dataSource={data}
         bordered
         rowKey="uid"
@@ -188,7 +191,7 @@ export default props => {
         pagination={{
           pageSize: 20,
           total: total,
-          onChange: fetchPage
+          onChange: fetchPage,
         }}
         title={() => (
           <Button type="dashed" block onClick={() => setVisible(true)}>
@@ -206,3 +209,11 @@ export default props => {
     </>
   );
 };
+
+Author.propTypes = {
+  history: PropTypes.object,
+  name: PropTypes.string,
+  description: PropTypes.string,
+};
+
+export default Author;
