@@ -1,0 +1,13 @@
+version: "3.7"
+services:
+    node:
+        build: .
+        image: node:latest
+        volumes:
+            - .:/usr/app/
+        working_dir: /usr/app/
+        ports: 
+            - "3000:3000"
+        command: bash -c "npm rebuild node-sass && npm run start"
+        env_file: 
+            - .env
