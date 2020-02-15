@@ -2,25 +2,22 @@ const merge = require('webpack-merge');
 const common = require('./webpack.common.js');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
-const {DefinePlugin} = require('webpack');
+const { DefinePlugin } = require('webpack');
 require('dotenv').config();
 
 module.exports = merge(common, {
   mode: 'production',
   optimization: {
-    minimizer:
-    [
-      new TerserPlugin(
-          {
-            terserOptions: {
-              output: {
-                comments: false,
-              },
-            },
-            extractComments: false,
-          },
-      ),
-      new OptimizeCSSAssetsPlugin({}),
+    minimizer: [
+      new TerserPlugin({
+        terserOptions: {
+          output: {
+            comments: false
+          }
+        },
+        extractComments: false
+      }),
+      new OptimizeCSSAssetsPlugin({})
     ],
     splitChunks: {
       chunks: 'all',
@@ -34,20 +31,20 @@ module.exports = merge(common, {
       cacheGroups: {
         vendors: {
           test: /[\\/]node_modules[\\/]/,
-          priority: 1,
+          priority: 1
         },
         default: {
           minChunks: 2,
           priority: 0,
-          reuseExistingChunk: true,
+          reuseExistingChunk: true
         },
-        name: 'vendors',
-      },
-    },
+        name: 'vendors'
+      }
+    }
   },
   plugins: [
     new DefinePlugin({
-      API_BASE_DOMAIN: JSON.stringify(process.env.API_BASE_DOMAIN),
-    }),
-  ],
+      API_BASE_DOMAIN: JSON.stringify(process.env.API_BASE_DOMAIN)
+    })
+  ]
 });

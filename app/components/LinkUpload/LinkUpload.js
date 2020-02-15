@@ -1,8 +1,8 @@
 import './LinkUpload.scss';
 import React from 'react';
-import {Input, Upload, Button, Icon} from 'antd';
+import { Input, Upload, Button, Icon } from 'antd';
 
-const LinkUpload = (props) => {
+const LinkUpload = props => {
   return (
     <>
       <Input placeholder="Logo" />

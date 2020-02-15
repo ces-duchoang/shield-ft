@@ -1,8 +1,8 @@
 import React from 'react';
-import {Link} from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import './Home.scss';
-import {Layout, Menu} from 'antd';
-const {Header} = Layout;
+import { Layout, Menu } from 'antd';
+const { Header } = Layout;
 
 export default class Home extends React.Component {
   componentDidMount() {
@@ -17,7 +17,7 @@ export default class Home extends React.Component {
             theme="dark"
             mode="horizontal"
             defaultSelectedKeys={['2']}
-            style={{lineHeight: '64px'}}
+            style={{ lineHeight: '64px' }}
           >
             <Menu.Item key="1">
               <Link to="/login">Đăng nhập</Link>

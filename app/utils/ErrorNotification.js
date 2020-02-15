@@ -1,10 +1,15 @@
-import {notification} from 'antd';
+import { notification } from 'antd';
 
-export default (err) => {
+export default err => {
   if (err.name === 'Error') {
-    notification.error({
-      message: 'Error ' + err.response.status,
-      description: err.response.data.message,
-    });
+    err.response
+      ? notification.error({
+          message: 'Error ' + err.response.status,
+          description: err.response.data.message
+        })
+      : notification.error({
+          message: 'Error',
+          description: 'Sorry something went wrong'
+        });
   } else console.log(err);
 };

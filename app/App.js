@@ -1,11 +1,11 @@
 /* eslint-disable require-jsdoc */
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import './App.scss';
-import {Switch, Route, BrowserRouter} from 'react-router-dom';
+import { Switch, Route, BrowserRouter } from 'react-router-dom';
 import Home from './screens/Home';
 import Login from './screens/Login';
-import {isValidSession, clearSession} from './api/Session';
-import {Result} from 'antd';
+import { isValidSession, clearSession } from './api/Session';
+import { Result } from 'antd';
 import DashBoard from './screens/Dashboard';
 import PrivateRoute from './components/PrivateRoute';
 import Initializing from './components/Initializing';
@@ -14,13 +14,13 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      isInitializing: true,
+      isInitializing: true
     };
   }
   // eslint-disable-next-line react/no-deprecated
   async componentWillMount() {
     (await isValidSession()) || clearSession();
-    this.setState({isInitializing: false});
+    this.setState({ isInitializing: false });
   }
 
   render() {

@@ -1,1 +1,1 @@
-export {default} from './Initializing';
+export { default } from './Initializing';

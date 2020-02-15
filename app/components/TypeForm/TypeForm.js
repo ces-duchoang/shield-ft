@@ -1,19 +1,20 @@
-import React, {useState, useEffect} from 'react';
-import {validateName, validateDescription} from '../../validators/Category';
-import {Modal, Form, Input} from 'antd';
+import React, { useState, useEffect } from 'react';
+import { validateName, validateDescription } from '../../validators/Category';
+import { Modal, Form, Input } from 'antd';
 import TextArea from 'antd/lib/input/TextArea';
-import {isEmpty} from 'lodash';
+import { isEmpty } from 'lodash';
 import PropTypes from 'prop-types';
+import lodash from 'lodash';
 
-const initState = {name: '', description: ''};
+const initState = { name: '', description: '' };
 
-const TypeForm = (props) => {
+const TypeForm = props => {
   const [formData, setFormData] = useState(initState);
   const [alert, setAlert] = useState({});
 
   const setFormState = (key, value) => {
     setAlert({});
-    setFormData({...formData, [key]: value});
+    setFormData({ ...formData, [key]: value });
   };
 
   const clearState = () => {
@@ -25,10 +26,10 @@ const TypeForm = (props) => {
   const isValidForm = () => {
     const alert = {
       name: validateName(formData.name),
-      description: validateDescription(formData.description),
+      description: validateDescription(formData.description)
     };
     setAlert(alert);
-    return _.values(alert).every(_.isEmpty);
+    return lodash.values(alert).every(lodash.isEmpty);
   };
 
   const submit = () => {
@@ -55,15 +56,15 @@ const TypeForm = (props) => {
         <Input
           placeholder="Name"
           value={formData.name}
-          onChange={(e) => setFormState('name', e.target.value)}
+          onChange={e => setFormState('name', e.target.value)}
         />
       </Form.Item>
       <Form.Item label="Description" {...alert.description}>
         <TextArea
           placeholder="Description"
-          autosize={{minRows: 5, maxRows: 6}}
+          autosize={{ minRows: 5, maxRows: 6 }}
           value={formData.description}
-          onChange={(e) => setFormState('description', e.target.value)}
+          onChange={e => setFormState('description', e.target.value)}
         />
       </Form.Item>
     </Modal>
@@ -74,7 +75,7 @@ TypeForm.propTypes = {
   callback: PropTypes.func,
   visible: PropTypes.bool,
   formData: PropTypes.object,
-  close: PropTypes.func,
+  close: PropTypes.func
 };
 
 export default TypeForm;

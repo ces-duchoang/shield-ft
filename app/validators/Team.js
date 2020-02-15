@@ -1,23 +1,23 @@
-import {getError, getSummaryError} from './Common';
-import {StringName, StringDescription, StringLink} from './Schema';
-import {message} from 'antd';
+import { getError, getSummaryError } from './Common';
+import { StringName, StringDescription, StringLink } from './Schema';
+import { message } from 'antd';
 
-export const validateName = (name) =>
+export const validateName = name =>
   getError(StringName.required().validate(name).error, 'Name');
 
-export const validateDescription = (description) =>
+export const validateDescription = description =>
   getError(StringDescription.validate(description).error, 'Description');
 
-export const validateLogo = (link) =>
+export const validateLogo = link =>
   getSummaryError(StringLink.validate(link).error, 'Logo');
 
-export const validateForm = (formData) => ({
+export const validateForm = formData => ({
   name: validateName(formData.name),
   description: validateDescription(formData.description),
-  logo: validateLogo(formData.logo),
+  logo: validateLogo(formData.logo)
 });
 
-export const validateImage = (file) => {
+export const validateImage = file => {
   const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
   if (!isJpgOrPng) {
     message.error('You can only upload JPG/PNG file!');
