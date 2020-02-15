@@ -5,8 +5,10 @@
         "node": true
     },
     "extends": [
-        "plugin:react/recommended",
-        "google"
+        "google",
+        "eslint:recommended",
+        "plugin:prettier/recommended",
+        "plugin:react/recommended"
     ],
     "globals": {
         "Atomics": "readonly",
@@ -20,9 +22,12 @@
         "sourceType": "module"
     },
     "plugins": [
-        "react"
+        "react",
+        "prettier"
     ],
     "rules": {
-        "require-jsdoc" : 0
+        "require-jsdoc" : 0,
+        "prettier/prettier": "error",
+        "object-curly-spacing": 0
     }
 }
